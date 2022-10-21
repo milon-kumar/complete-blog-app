@@ -10,7 +10,9 @@ use App\Http\Controllers\Frontend\LikeController;
 use App\Http\Controllers\Frontend\SubscribeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/',[HomeController::class,'home'])->name('frontend.home');
+Route::get('/',function (){
+    return redirect()->route('login');
+})->name('frontend.home');
 Route::get('/details/{slug}',[BlogController::class,'details'])->name('frontend.blog.details');
 
 Route::get('/category',[CategoryController::class,'category'])->name('frontend.category');

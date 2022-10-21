@@ -21,6 +21,7 @@ class CategoryFactory extends Factory
         return [
             'user_id'=>1,
             'name'=>$name,
+            'body'=>$this->faker->text(150),
             'slug'=>Str::slug($name),
         ];
     }

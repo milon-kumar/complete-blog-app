@@ -44,7 +44,9 @@
         <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
     </div>
 </div>
-{{--<script type="text/javascript" src="{{asset('/')}}assets/backend/assets/scripts/main.js"></script>--}}
+<script src="{{asset('/assets/backend/jquery-3.6.1.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('/')}}assets/backend/assets/scripts/main.js"></script>
+
 {{-- CKEditor CDN --}}
 <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
 

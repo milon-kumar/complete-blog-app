@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Helper\Uploads;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -18,6 +20,7 @@ class BlogController extends Controller
      */
     public function index()
     {
+
         return view('backend.blog.index',[
             'blogs'=>Blog::orderBy('id','DESC')->paginate(15),
         ]);
@@ -32,6 +35,7 @@ class BlogController extends Controller
     {
         return view('backend.blog.create',[
             'categories'=>Category::where('status',1)->get(),
+            'tags'=>Tag::where('status',1)->get(),
         ]);
     }
 
@@ -43,26 +47,18 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
+
         self::validate($request,[
             'title'         =>'required',
             'description'   =>'required',
-            'category_id'   =>'required|integer',
             'image'         =>'required|image|mimes:jpg,jpeg,png,webp',
             'status'        =>'required|integer',
         ]);
 
-        Blog::create([
-            'user_id'=>Auth::id(),
-            'category_id'   =>$request->input('category_id'),
-            'title'         =>$request->input('title'),
-            'slug'          =>Str::slug($request->input('title')),
-            'description'   =>$request->input('description'),
-            'status'        =>$request->input('status'),
-            'image'         =>uploadImage($request),
-        ]);
+         Blog::saveOrUpdate($request);
 
         toast('Blog Saved','success');
-        return redirect()->route('backend.blog.index');
+        return redirect()->back();
     }
 
     /**
@@ -84,9 +80,11 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
+
         return view('backend.blog.edit',[
             'categories'=>Category::where('status',1)->get(),
-            'blog'=>$blog
+            'tags'=>Tag::where('status',1)->get(),
+            'blog'=>$blog,
         ]);
     }
 
@@ -99,44 +97,18 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
+
         self::validate($request,[
             'title'         =>'required',
             'description'   =>'required',
-            'category_id'   =>'required|integer',
             'image'         =>'nullable|image|mimes:jpg,jpeg,png,webp',
             'status'        =>'required|integer',
         ]);
 
-        if ($request->hasFile('image')){
+        Blog::saveOrUpdate($request,$blog->id);
 
-            $blog->update([
-                'user_id'=>Auth::id(),
-                'category_id'   =>$request->input('category_id'),
-                'title'         =>$request->input('title'),
-                'slug'          =>Str::slug($request->input('title')),
-                'description'   =>$request->input('description'),
-                'status'        =>$request->input('status'),
-                'image'         =>uploadImage($request),
-            ]);
-
-            toast('Blog Updated','success');
-            return redirect()->route('backend.blog.index');
-
-        }else{
-            $blog->update([
-                'user_id'=>Auth::id(),
-                'category_id'   =>$request->input('category_id'),
-                'title'         =>$request->input('title'),
-                'slug'          =>Str::slug($request->input('title')),
-                'description'   =>$request->input('description'),
-                'status'        =>$request->input('status'),
-                'image'         =>$blog->image,
-            ]);
-
-            toast('Blog Saved','success');
-            return redirect()->route('backend.blog.index');
-        }
-
+        toast('Blog Updated','success');
+        return redirect()->route('backend.blog.index');
     }
 
     /**

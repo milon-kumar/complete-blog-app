@@ -7,7 +7,10 @@ use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Like;
+use App\Models\Service;
+use App\Models\Tag;
 use App\Models\User;
+use App\Models\Works;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,11 +39,12 @@ class DatabaseSeeder extends Seeder
              'email' => 'user@example.com',
          ]);
 
-        Category::factory(10)->create();
-        Blog::factory(50)->create();
-
-        Comment::factory(50)->create();
-
-        Like::factory(10)->create();
+        Category::factory(5)->create();
+        Tag::factory(5)->create();
+        Blog::factory(5)->create();
+        Comment::factory(5)->create();
+        Like::factory(5)->create();
+        Service::factory(5)->create();
+        Works::factory(5)->create();
     }
 }

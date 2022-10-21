@@ -1,5 +1,4 @@
 @extends('backend.master')
-
 @section('content')
 
     <div class="app-main__outer">
@@ -14,16 +13,17 @@
                             <i class="pe-7s-drawer icon-gradient bg-happy-itmeo">
                             </i>
                         </div>
-                        <div>Blogs Tables
-                            <div class="page-title-subheading">Show The All Blog
+                        <div>Blogs Create Form
+                            <div class="page-title-subheading">Create A New Blog Here
                             </div>
                         </div>
                     </div>
                     <div class="page-title-actions">
                         <div class="d-inline-block dropdown">
-                            <a href="{{route('backend.blog.create')}}" class="btn-shadow btn btn-info">
+                            <a href="{{route('backend.blog.index')}}" class="btn-shadow btn btn-danger">
                                 <span class="btn-icon-wrapper pr-2 opacity-7">
-                                    <i class="fa fa-plus-circle fa-w-20"></i>
+                                    <i class="fa fa-arrow-left fa-w-20"></i>
+                                    Go Back
                                 </span>
                             </a>
                         </div>
@@ -42,8 +42,12 @@
                                         <label for="title">Blog Title</label>
                                     </div>
                                     <div class="col-md-10">
-                                        <input type="text"  name="title" class="form-control">
+                                        <input type="text"  name="title" class="form-control @error('title') is-invalid @enderror">
+                                        @error('title')
+                                            <small class="text-danger">{{$message}}</small>
+                                        @enderror
                                     </div>
+
                                 </div>
 
                                 <div class="row mb-3">
@@ -51,7 +55,7 @@
                                         <label for="title">Select Category</label>
                                     </div>
                                     <div class="col-md-10">
-                                       <select class="form-control" name="category_id">
+                                       <select class="multi-select form-control @error('category_id[]') is-invalid @enderror" multiple min="5" name="category_id[]">
                                            @if($categories->count() > 0)
                                                <option>Select Category</option>
                                                @foreach($categories as $category)
@@ -60,6 +64,32 @@
                                            @else
                                            No Category Found
                                            @endif
+
+                                           @error('category_id[]')
+                                           <small class="text-danger">{{$message}}</small>
+                                           @enderror
+                                       </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-2">
+                                        <label for="title">Select Tags</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                       <select class="multi-select form-control @error('tag_id[]') is-invalid @enderror" multiple min="5" name="tag_id[]">
+                                           @if($tags->count() > 0)
+                                               <option>Select Category</option>
+                                               @foreach($tags as $tag)
+                                                   <option value="{{$tag->id}}">{{$tag->name}}</option>
+                                               @endforeach
+                                           @else
+                                           No Tags Found
+                                           @endif
+
+                                           @error('tag_id[]')
+                                           <small class="text-danger">{{$message}}</small>
+                                           @enderror
                                        </select>
                                     </div>
                                 </div>
@@ -75,8 +105,10 @@
                                                   style="width: 100%;height: 100%;"
                                                   placeholder="Blog Description"
                                                   class="form-control border border-dark @error('description') is-invalid @enderror">
-
                                         </textarea>
+                                        @error('description')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -87,8 +119,12 @@
                                     <div class="col-md-10">
                                         <div class="input-group mb-3">
                                             <div class="custom-file">
-                                                <input type="file" name="image" class="custom-file-input">
+                                                <input type="file" name="image" class="custom-file-input @error('image') is-invalid @enderror">
                                                 <label class="custom-file-label">Choose file</label>
+
+                                                @error('image')
+                                                <small class="text-danger">{{$message}}</small>
+                                                @enderror
                                             </div>
                                         </div>
 
@@ -102,16 +138,19 @@
                                     <div class="col-md-10">
                                         <div class="form-check form-check-inline text-success font-weight-bold">
                                             <label class="form-check-label">
-                                                <input  type="radio" name="status" value="1" class="bg-success form-check-input">
+                                                <input  type="radio" name="status" value="1" class="bg-success form-check-input @error('status') is-invalid @enderror">
                                                 Published
                                             </label>
                                         </div>
                                         <div class="form-check form-check-inline text-danger font-weight-bold">
                                             <label class="form-check-label">
-                                                <input type="radio"  name="status" value="0" class="bg-danger form-check-input">
+                                                <input type="radio"  name="status" value="0" class="bg-danger form-check-input  @error('status') is-invalid @enderror">
                                                 Unpublished
                                             </label>
                                         </div>
+                                        @error('status')
+                                        <small class="text-danger">{{$message}}</small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -143,11 +182,35 @@
 @endsection
 
 @push('js')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
+        $(document).ready(function() {
+            $('.multi-select').select2();
+        });
+
         ClassicEditor
-            .create( document.querySelector( '#description' ) )
-            .catch( error => {
-                console.error( error );
-            } );
+            .create(document.querySelector('#description'), {
+                plugins: [SourceEditing, Markdown],
+                toolbar: ['heading', '|',
+                    'fontfamily', 'fontsize', '|',
+                    'alignment', '|',
+                    'fontColor', 'fontBackgroundColor', '|',
+                    'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
+                    'link', '|',
+                    'outdent', 'indent', '|',
+                    'bulletedList', 'numberedList', 'todoList', '|',
+                    'code', 'codeBlock', '|',
+                    'insertTable', '|',
+                    'uploadImage', 'blockQuote', '|',
+                    'undo', 'redo', 'editor'], shouldNotGroupWhenFull: true
+
+            })
+            .then(editor => {
+                myEditor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
     </script>
 @endpush

@@ -20,11 +20,10 @@ class BlogFactory extends Factory
         $title = $this->faker->text(20);
         return [
             'user_id'=>1,
-            'category_id'=>rand(1,5),
             'title'=>$title,
             'slug'=>Str::slug($title),
             'description'=>$this->faker->text(2410),
-            'image'=>'default.jpg',
+            'image'=>'uploads/default.jpg',
             'status'=>rand(0,1),
         ];
     }

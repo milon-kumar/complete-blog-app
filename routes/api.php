@@ -1,6 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\ServicesController;
+use App\Http\Controllers\Api\WorksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::get('/blog',[HomeController::class,'blog']);
+Route::get('/blogs',[BlogController::class,'blogs']);
+Route::get('/services',[ServicesController::class,'services']);
+Route::get('/works',[WorksController::class,'work']);

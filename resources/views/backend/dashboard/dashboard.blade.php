@@ -201,7 +201,7 @@
                                                     <tr>
                                                         <td>{{$key + 1}}</td>
                                                         <td>{{$category->name}}</td>
-                                                        <td>{{$category->blogs->count()}}</td>
+{{--                                                        <td>{{$category->blogs->count()}}</td>--}}
                                                         <td>
                                                             @if($category->status == 1)
                                                                 <div class="mb-2 mr-2 badge badge-pill badge-info">Published</div>

@@ -3,9 +3,7 @@
 @section('content')
 
     <div class="app-main__outer">
-
        <!--  Main -->
-
         <div class="app-main__inner">
             <div class="app-page-title">
                 <div class="page-title-wrapper">
@@ -41,7 +39,6 @@
                                 <tr>
                                     <th>#SL</th>
                                     <th>Title</th>
-                                    <th>Category</th>
                                     <th>Image</th>
                                     <th>View Count</th>
                                     <th>Status</th>
@@ -53,9 +50,8 @@
                                     <tr>
                                         <th scope="row">{{$key + 1}}</th>
                                         <td>{{$blog->title}}</td>
-                                        <td>{{$blog->category->name}}</td>
-                                        <td>
-                                            <img class="img-fluid" style="width: 65px; height: 65px; object-fit: cover; border-radius: 8px; overflow: hidden;" src="{{asset('uploads/'.$blog->image)}}" alt="{{Str::limit($blog->slug,2)}}">
+                                        <td class="text-center">
+                                            <img class="img-fluid" style="width: 35px; height: 35px; object-fit: cover; border-radius: 8px; overflow: hidden;" src="{{asset($blog->image)}}" alt="{{Str::limit($blog->slug,2)}}">
                                         </td>
                                         <td>{{$blog->view_count}}</td>
                                         <td>
@@ -65,7 +61,8 @@
                                                 <span class="badge badge-danger">Unpublished</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <td class="text-center">
+                                            <a href="{{route('backend.blog.show',$blog->id)}}" class="btn btn-primary btn-sm">View</a>
                                             <a href="{{route('backend.blog.edit',$blog->id)}}" class="btn btn-info btn-sm">Edit</a>
                                             <form class="d-none" id="deleteBlog{{$blog->id}}" action="{{route("backend.blog.destroy",$blog->id)}}" method="post">
                                                 @csrf

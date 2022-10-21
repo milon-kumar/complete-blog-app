@@ -45,7 +45,13 @@
                 </li>
                 <li class="app-sidebar__heading">Data Section</li>
                 <li>
-                    <a href="{{route('backend.category.index')}}" class="{{ Request::is('backend/category') ? 'mm-active' : '' }}">
+                    <a href="{{route('backend.tags.index')}}" class="{{ Request::is('backend/tags*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-rocket"></i>
+                        Tag
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('backend.category.index')}}" class="{{ Request::is('backend/category*') ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-rocket"></i>
                         Category
                     </a>
@@ -57,6 +63,21 @@
                         Blog
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{route('backend.service.index')}}" class="{{ Request::is('backend/service') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-rocket"></i>
+                        Service
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('backend.works.index')}}" class="{{ Request::is('backend/works') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-rocket"></i>
+                        Work
+                    </a>
+                </li>
+
                 <li class="app-sidebar__heading">Client Section</li>
                 <li>
                     <a href="{{route('backend.comment.index')}}" class="{{ Request::is('backend/comment') ? 'mm-active' : '' }}">

@@ -15,18 +15,14 @@ return new class extends Migration
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('title');
             $table->string('slug');
             $table->longText('description');
             $table->string('image')->nullable();
             $table->string('status');
             $table->boolean('is_like')->default(false);
-            $table->integer('view_count')->default(0);
-//            $table->foreign('user_id')->on('users')->references('id')->cascadeOnUpdate()->cascadeOnDelete();
-//            $table->foreign('category_id')->on('categories')->references('id')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->timestamps();
+            $table->integer('view_count')->default(0); $table->timestamps();
         });
     }
 
